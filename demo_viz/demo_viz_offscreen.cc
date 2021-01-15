@@ -90,7 +90,7 @@ class OffscreenSoftwareOutputDevice : public viz::SoftwareOutputDevice {
     DLOG(INFO) << "BeginPaint: get a canvas for paint";
     return viz::SoftwareOutputDevice::BeginPaint(damage_rect);
   }
-  virtual void OnSwapBuffers(SwapBuffersCallback swap_ack_callback) override {
+  void OnSwapBuffers(SwapBuffersCallback swap_ack_callback) override {
     auto image = surface_->makeImageSnapshot();
     SkBitmap bitmap;
     DCHECK(image->asLegacyBitmap(&bitmap));
@@ -210,10 +210,10 @@ class OffscreenRenderer : public viz::mojom::CompositorFrameSinkClient,
     return frame;
   }
 
-  virtual void DidReceiveCompositorFrameAck(
+  void DidReceiveCompositorFrameAck(
       const std::vector<::viz::ReturnedResource>& resources) override {}
 
-  virtual void OnBeginFrame(
+  void OnBeginFrame(
       const ::viz::BeginFrameArgs& args,
       const base::flat_map<uint32_t, ::viz::FrameTimingDetails>& details)
       override {
@@ -229,9 +229,9 @@ class OffscreenRenderer : public viz::mojom::CompositorFrameSinkClient,
                                     /*trace_time=*/0);
   }
 
-  virtual void OnBeginFramePausedChanged(bool paused) override {}
+  void OnBeginFramePausedChanged(bool paused) override {}
 
-  virtual void ReclaimResources(
+  void ReclaimResources(
       const std::vector<::viz::ReturnedResource>& resources) override {}
 
   // viz::DisplayClient overrides.

@@ -207,7 +207,7 @@ class DemoWindowHost : public ui::PlatformWindowDelegate {
         action = 2;
       else
         return;
-      auto located_event = event->AsLocatedEvent();
+      auto* located_event = event->AsLocatedEvent();
       auto location = located_event->location();
       if (action != 2)
         DLOG(INFO) << "action,x,y= " << action << "," << location.x() << ","
@@ -232,7 +232,7 @@ class DemoWindowHost : public ui::PlatformWindowDelegate {
   std::unique_ptr<ui::PlatformWindow> platform_window_;
   gfx::AcceleratedWidget widget_;
   base::OnceClosure close_closure_;
-  bool is_software_ = true;
+  //bool is_software_ = true;
   scoped_refptr<gl::GLSurface> g_gl_surface;
   scoped_refptr<gl::GLContext> g_gl_context;
   scoped_refptr<gpu::SharedContextState> g_context_state;

@@ -65,7 +65,7 @@ void InitHostMain(gfx::AcceleratedWidget widget,
   g_gl_surface = gl::init::CreateViewGLSurface(widget);
 
   auto context_state = gpu_service->GetContextState();
-  auto share_group = context_state->share_group();
+  auto* share_group = context_state->share_group();
   g_gl_context = gl::init::CreateGLContext(share_group, g_gl_surface.get(),
                                            gl::GLContextAttribs());
   DCHECK(g_gl_context->MakeCurrent(g_gl_surface.get()));
@@ -73,7 +73,7 @@ void InitHostMain(gfx::AcceleratedWidget widget,
       share_group, g_gl_surface, g_gl_context, false, base::DoNothing(),
       gpu::GrContextType::kGL);
   gpu::GpuPreferences gpu_preferences;
-  auto feature_info = gpu_service->GetContextState()->feature_info();
+  auto* feature_info = gpu_service->GetContextState()->feature_info();
   g_context_state->InitializeGL(gpu_preferences, feature_info);
   g_context_state->InitializeGrContext(feature_info->workarounds(), nullptr);
   DCHECK(g_context_state->MakeCurrent(g_gl_surface.get(), true));
@@ -107,7 +107,7 @@ void Redraw() {
   fb_info.fFBOID = buffer;
   fb_info.fFormat = GL_RGBA8;
 
-  auto gr_context = g_context_state->gr_context();
+  auto* gr_context = g_context_state->gr_context();
   DCHECK(gr_context);
   GrBackendRenderTarget backendRT(g_size_.width(), g_size_.height(), 0, 8,
                                   fb_info);
@@ -115,7 +115,7 @@ void Redraw() {
   auto skSurface = SkSurface::MakeFromBackendRenderTarget(
       gr_context, backendRT, kTopLeft_GrSurfaceOrigin, kRGBA_8888_SkColorType,
       nullptr, &props);
-  auto canvas = skSurface->getCanvas();
+  auto* canvas = skSurface->getCanvas();
   static unsigned int i = 0;
   canvas->clear(SK_ColorYELLOW + i++);
 

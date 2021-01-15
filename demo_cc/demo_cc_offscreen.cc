@@ -159,7 +159,7 @@ class OffscreenSoftwareOutputDevice : public viz::SoftwareOutputDevice {
     LOG(INFO) << "BeginPaint: get a canvas for paint";
     return viz::SoftwareOutputDevice::BeginPaint(damage_rect);
   }
-  virtual void OnSwapBuffers(SwapBuffersCallback swap_ack_callback) override {
+  void OnSwapBuffers(SwapBuffersCallback swap_ack_callback) override {
     auto image = surface_->makeImageSnapshot();
     SkBitmap bitmap;
     DCHECK(image->asLegacyBitmap(&bitmap));
@@ -285,7 +285,7 @@ class OffscreenLayerTreeFrameSink
   }
 
   // viz::mojom::CompositorFrameSinkClient overrides.
-  virtual void DidReceiveCompositorFrameAck(
+  void DidReceiveCompositorFrameAck(
       const std::vector<::viz::ReturnedResource>& resources) override {
     // Submitting a CompositorFrame can synchronously draw and dispatch a frame
     // ack. PostTask to ensure the client is notified on a new stack frame.
@@ -301,7 +301,7 @@ class OffscreenLayerTreeFrameSink
     // 用于告诉cc::Scheduler上一帧已经处理完了
     client_->DidReceiveCompositorFrameAck();
   }
-  virtual void OnBeginFrame(
+  void OnBeginFrame(
       const ::viz::BeginFrameArgs& args,
       const base::flat_map<uint32_t, ::viz::FrameTimingDetails>& details)
       override {
@@ -318,8 +318,8 @@ class OffscreenLayerTreeFrameSink
     // 这句代码是 cc:::Scheduler 的发动机之一
     external_begin_frame_source_->OnBeginFrame(args);
   }
-  virtual void OnBeginFramePausedChanged(bool paused) override {}
-  virtual void ReclaimResources(
+  void OnBeginFramePausedChanged(bool paused) override {}
+  void ReclaimResources(
       const std::vector<::viz::ReturnedResource>& resources) override {}
 
   // viz::DisplayClient overrides.
@@ -386,7 +386,7 @@ class Compositor
     host_->SetNeedsCommit();
   }
 
-  virtual ~Compositor() {}
+  ~Compositor() override {}
 
  private:
   // 画面大小为 300x200

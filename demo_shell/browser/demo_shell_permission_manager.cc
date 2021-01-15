@@ -20,6 +20,7 @@ namespace {
 
 bool IsWhitelistedPermissionType(PermissionType permission) {
   switch (permission) {
+    case PermissionType::NFC:
     case PermissionType::GEOLOCATION:
     case PermissionType::MIDI:
     case PermissionType::SENSORS:

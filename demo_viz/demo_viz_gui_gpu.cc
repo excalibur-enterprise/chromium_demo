@@ -136,7 +136,7 @@ class LayerTreeFrameSink : public viz::mojom::CompositorFrameSinkClient {
     CHECK(thread_.Start());
   }
 
-  virtual ~LayerTreeFrameSink() {}
+  ~LayerTreeFrameSink() override {}
 
   // remote 和 associated_remote 只能一个有效.
   // remote 用于非 root 的 client, associated_remote 用于 root client.
@@ -563,7 +563,7 @@ class LayerTreeFrameSink : public viz::mojom::CompositorFrameSinkClient {
     sii->DestroySharedImage(sync_token, mailbox);
   }
 
-  virtual void DidReceiveCompositorFrameAck(
+  void DidReceiveCompositorFrameAck(
       const std::vector<::viz::ReturnedResource>& resources) override {
     TRACE_EVENT1("viz", "LayerTreeFrameSink::DidReceiveCompositorFrameAck",
                  "size", resources.size());
@@ -574,7 +574,7 @@ class LayerTreeFrameSink : public viz::mojom::CompositorFrameSinkClient {
     }
   }
 
-  virtual void OnBeginFrame(
+  void OnBeginFrame(
       const ::viz::BeginFrameArgs& args,
       const base::flat_map<uint32_t, ::viz::FrameTimingDetails>& details)
       override {
@@ -585,11 +585,11 @@ class LayerTreeFrameSink : public viz::mojom::CompositorFrameSinkClient {
         /*trace_time=*/0);
   }
 
-  virtual void OnBeginFramePausedChanged(bool paused) override {
+  void OnBeginFramePausedChanged(bool paused) override {
     DLOG(INFO) << __FUNCTION__;
   }
 
-  virtual void ReclaimResources(
+  void ReclaimResources(
       const std::vector<::viz::ReturnedResource>& resources) override {
     TRACE_EVENT1("viz", "LayerTreeFrameSink::ReclaimResources", "size",
                  resources.size());
@@ -657,13 +657,13 @@ class Compositor : public viz::HostFrameSinkClient {
 
   // Called when a CompositorFrame with a new SurfaceId activates for the first
   // time.
-  virtual void OnFirstSurfaceActivation(
+  void OnFirstSurfaceActivation(
       const viz::SurfaceInfo& surface_info) override {
     DLOG(INFO) << __FUNCTION__;
   }
 
   // Called when a CompositorFrame with a new frame token is provided.
-  virtual void OnFrameTokenChanged(uint32_t frame_token) override {
+  void OnFrameTokenChanged(uint32_t frame_token) override {
     DLOG(INFO) << __FUNCTION__;
   }
 

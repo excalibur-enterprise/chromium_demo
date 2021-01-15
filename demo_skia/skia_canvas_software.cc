@@ -21,7 +21,7 @@ void SkiaCanvasSoftware::InitializeOnRenderThread() {
   // 当 format = AHARDWAREBUFFER_FORMAT_R5G6B5_UNORM = 4
   // 时，一个像素占2个字节，所以x2
   // memset(buffer.bits, 0xAA, buffer.stride * buffer.height * 2);
-  auto canvas = BeginPaint();
+  auto* canvas = BeginPaint();
   canvas->clear(background_);
   //canvas->drawCircle(20, 20, 20, circlePaint_);
   OnPaint(canvas);

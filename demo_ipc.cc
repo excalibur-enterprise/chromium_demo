@@ -167,7 +167,7 @@ public:
     if (message.routing_id() == MSG_ROUTING_CONTROL) {
       handled = OnControlMessageReceived(message);
     } else {
-      for(auto filter : filters_)
+      for(auto* filter : filters_)
       {
         if(filter->OnMessageReceived(message)) {
           break;

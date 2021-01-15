@@ -25,7 +25,7 @@ namespace demo_jni {
 namespace {
 class GLShaderErrorHandler : public GrContextOptions::ShaderErrorHandler {
  public:
-  void compileError(const char* shader, const char* errors) {
+  void compileError(const char* shader, const char* errors) override {
     LOG(ERROR) << "Skia shader compilation error\n"
                << "------------------------\n"
                << shader << "\nErrors:\n"

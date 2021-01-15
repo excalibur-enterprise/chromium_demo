@@ -104,7 +104,7 @@ class LayerTreeFrameSink : public viz::mojom::CompositorFrameSinkClient {
     CHECK(thread_.Start());
   }
 
-  virtual ~LayerTreeFrameSink() {}
+  ~LayerTreeFrameSink() override {}
 
   // remote 和 associated_remote 只能一个有效.
   // remote 用于非 root 的 client, associated_remote 用于 root client.
@@ -460,10 +460,10 @@ class LayerTreeFrameSink : public viz::mojom::CompositorFrameSinkClient {
         viz::SingleReleaseCallback::Create(base::DoNothing()));
   }
 
-  virtual void DidReceiveCompositorFrameAck(
+  void DidReceiveCompositorFrameAck(
       const std::vector<::viz::ReturnedResource>& resources) override {}
 
-  virtual void OnBeginFrame(
+  void OnBeginFrame(
       const ::viz::BeginFrameArgs& args,
       const base::flat_map<uint32_t, ::viz::FrameTimingDetails>& details)
       override {
@@ -474,9 +474,9 @@ class LayerTreeFrameSink : public viz::mojom::CompositorFrameSinkClient {
         /*trace_time=*/0);
   }
 
-  virtual void OnBeginFramePausedChanged(bool paused) override {}
+  void OnBeginFramePausedChanged(bool paused) override {}
 
-  virtual void ReclaimResources(
+  void ReclaimResources(
       const std::vector<::viz::ReturnedResource>& resources) override {}
 
   viz::mojom::CompositorFrameSink* GetCompositorFrameSinkPtr() {
@@ -525,11 +525,11 @@ class Compositor : public viz::HostFrameSinkClient {
 
   // Called when a CompositorFrame with a new SurfaceId activates for the first
   // time.
-  virtual void OnFirstSurfaceActivation(
+  void OnFirstSurfaceActivation(
       const viz::SurfaceInfo& surface_info) override {}
 
   // Called when a CompositorFrame with a new frame token is provided.
-  virtual void OnFrameTokenChanged(uint32_t frame_token) override {}
+  void OnFrameTokenChanged(uint32_t frame_token) override {}
 
  private:
   void InitializeOnThread(

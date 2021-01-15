@@ -144,7 +144,7 @@ class InkClient : public viz::mojom::CompositorFrameSinkClient,
         thread_("Demo_" + frame_sink_id.ToString()) {
     CHECK(thread_.Start());
   }
-  ~InkClient() {}
+  ~InkClient() override {}
   void Bind(
       mojo::PendingReceiver<viz::mojom::CompositorFrameSinkClient> receiver,
       mojo::PendingRemote<viz::mojom::CompositorFrameSink> remote) {
@@ -192,10 +192,10 @@ class InkClient : public viz::mojom::CompositorFrameSinkClient,
 
  private:
   // This is called before the dispatcher receives the event.
-  virtual void WillProcessEvent(const ui::PlatformEvent& event) override {}
+  void WillProcessEvent(const ui::PlatformEvent& event) override {}
 
   // This is called after the event has been dispatched to the dispatcher(s).
-  virtual void DidProcessEvent(const ui::PlatformEvent& event) override {
+  void DidProcessEvent(const ui::PlatformEvent& event) override {
     ui::EventType type = ui::EventTypeFromNative(event);
     std::unique_ptr<ui::LocatedEvent> located_event;
     if (type == ui::ET_MOUSE_MOVED) {
@@ -387,7 +387,7 @@ class InkClient : public viz::mojom::CompositorFrameSinkClient,
     sii->DestroySharedImage(sync_token, mailbox);
   }
 
-  virtual void OnBeginFrame(
+  void OnBeginFrame(
       const ::viz::BeginFrameArgs& args,
       const base::flat_map<uint32_t, ::viz::FrameTimingDetails>& details)
       override {
@@ -404,7 +404,7 @@ class InkClient : public viz::mojom::CompositorFrameSinkClient,
     // frame_sink_remote_->SetNeedsBeginFrame(false);
   }
 
-  virtual void DidReceiveCompositorFrameAck(
+  void DidReceiveCompositorFrameAck(
       const std::vector<::viz::ReturnedResource>& resources) override {
     TRACE_EVENT1("viz", "LayerTreeFrameSink::DidReceiveCompositorFrameAck",
                  "size", resources.size());
@@ -415,11 +415,11 @@ class InkClient : public viz::mojom::CompositorFrameSinkClient,
     }
   }
 
-  virtual void OnBeginFramePausedChanged(bool paused) override {
+  void OnBeginFramePausedChanged(bool paused) override {
     // DLOG(INFO) << __FUNCTION__;
   }
 
-  virtual void ReclaimResources(
+  void ReclaimResources(
       const std::vector<::viz::ReturnedResource>& resources) override {
     TRACE_EVENT1("viz", "LayerTreeFrameSink::ReclaimResources", "size",
                  resources.size());
@@ -464,7 +464,7 @@ class LayerTreeFrameSink : public viz::mojom::CompositorFrameSinkClient {
     CHECK(thread_.Start());
   }
 
-  virtual ~LayerTreeFrameSink() {}
+  ~LayerTreeFrameSink() override {}
 
   // remote 和 associated_remote 只能一个有效.
   // remote 用于非 root 的 client, associated_remote 用于 root client.
@@ -930,7 +930,7 @@ class LayerTreeFrameSink : public viz::mojom::CompositorFrameSinkClient {
     sii->DestroySharedImage(sync_token, mailbox);
   }
 
-  virtual void DidReceiveCompositorFrameAck(
+  void DidReceiveCompositorFrameAck(
       const std::vector<::viz::ReturnedResource>& resources) override {
     TRACE_EVENT1("viz", "LayerTreeFrameSink::DidReceiveCompositorFrameAck",
                  "size", resources.size());
@@ -941,7 +941,7 @@ class LayerTreeFrameSink : public viz::mojom::CompositorFrameSinkClient {
     }
   }
 
-  virtual void OnBeginFrame(
+  void OnBeginFrame(
       const ::viz::BeginFrameArgs& args,
       const base::flat_map<uint32_t, ::viz::FrameTimingDetails>& details)
       override {
@@ -958,11 +958,11 @@ class LayerTreeFrameSink : public viz::mojom::CompositorFrameSinkClient {
     }
   }
 
-  virtual void OnBeginFramePausedChanged(bool paused) override {
+  void OnBeginFramePausedChanged(bool paused) override {
     DLOG(INFO) << __FUNCTION__;
   }
 
-  virtual void ReclaimResources(
+  void ReclaimResources(
       const std::vector<::viz::ReturnedResource>& resources) override {
     TRACE_EVENT1("viz", "LayerTreeFrameSink::ReclaimResources", "size",
                  resources.size());
@@ -1032,13 +1032,13 @@ class Compositor : public viz::HostFrameSinkClient {
 
   // Called when a CompositorFrame with a new SurfaceId activates for the first
   // time.
-  virtual void OnFirstSurfaceActivation(
+  void OnFirstSurfaceActivation(
       const viz::SurfaceInfo& surface_info) override {
     DLOG(INFO) << __FUNCTION__;
   }
 
   // Called when a CompositorFrame with a new frame token is provided.
-  virtual void OnFrameTokenChanged(uint32_t frame_token) override {
+  void OnFrameTokenChanged(uint32_t frame_token) override {
     TRACE_EVENT0("viz", "Compositor::OnFrameTokenChanged");
     // DLOG(INFO) << __FUNCTION__;
   }

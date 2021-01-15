@@ -26,7 +26,7 @@ class SkiaCanvasGL : public SkiaCanvas {
   SkiaCanvasGL(gfx::AcceleratedWidget widget,int width,int height);
   void Resize(int width, int height) override;
 
-  ~SkiaCanvasGL() override; 
+  ~SkiaCanvasGL(); 
 
  private:
   void InitializeOnRenderThread() override;

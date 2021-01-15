@@ -44,10 +44,10 @@ int main(int argc, char* argv[]) {
   XVisualInfo visualinfo;
   if (XMatchVisualInfo(display, DefaultScreen(display), 32, TrueColor,
                        &visualinfo)) {
-    printf("TransparentVisualID: %d\n", visualinfo.visualid);
+    printf("TransparentVisualID: %lu\n", visualinfo.visualid);
   } else if (XMatchVisualInfo(display, DefaultScreen(display), 24, TrueColor,
                               &visualinfo)) {
-    printf("OpaqueVisualID: %d\n", visualinfo.visualid);
+    printf("OpaqueVisualID: %lu\n", visualinfo.visualid);
   }
   // 在某些系统上 XMatchVisualInfo 返回的 visual 不可用，下面是兼容代码
   {
@@ -75,7 +75,7 @@ int main(int argc, char* argv[]) {
     XFree(visual_list);
     if(!visual_exist) {
       visualinfo = default_visualinfo;
-      printf("Use default VisualID: %d\n", visualinfo.visualid);
+      printf("Use default VisualID: %lu\n", visualinfo.visualid);
     }
   }
 
@@ -128,7 +128,7 @@ int main(int argc, char* argv[]) {
   // create OpenGL context
   GLXContext glcontext = glXCreateContext(display, &visualinfo, 0, True);
   if (!glcontext) {
-    printf("glXCreateContext failed: server=%s, visualid=%d\n", xserver,
+    printf("glXCreateContext failed: server=%s, visualid=%lu\n", xserver,
            visualinfo.visualid);
     exit(1);
   }
@@ -156,13 +156,13 @@ int main(int argc, char* argv[]) {
         case ClientMessage:
           // check if the client message was send by window manager to indicate
           // user wants to close the window
-          if (event.xclient.message_type ==
-                  XInternAtom(display, "WM_PROTOCOLS", 1) &&
-              event.xclient.data.l[0] ==
-                  XInternAtom(display, "WM_DELETE_WINDOW", 1)) {
-            isUserWantsWindowToClose = 1;
-          }
-          break;
+          //if (event.xclient.message_type ==
+            //      XInternAtom(display, "WM_PROTOCOLS", 1) &&
+             // event.xclient.data.l[0] ==
+               //   XInternAtom(display, "WM_DELETE_WINDOW", 1)) {
+           // isUserWantsWindowToClose = 1;
+          //}
+          //break;
         case KeyPress:
           if (XLookupKeysym(&event.xkey, 0) == XK_Escape) {
             isUserWantsWindowToClose = 1;

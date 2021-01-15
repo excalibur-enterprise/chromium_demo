@@ -101,6 +101,8 @@ SkiaCanvas::SkiaCanvas(gfx::AcceleratedWidget widget,int width,int height)
 
 void SkiaCanvas::InitializeOnRenderThread() {}
 
+//~SkiaCanvas() override  {} //KOKOTINA!
+
 // Android 系统会控制触摸事件的频率在 60 pps
 void SkiaCanvas::OnTouch(int action, float x, float y) {
   TRACE_EVENT0("shell", "SkiaCanvas::OnTouch");
@@ -178,7 +180,7 @@ void SkiaCanvas::OnRenderOnRenderThread() {
     TRACE_EVENT0("shell", "paint");
     auto paint_start_time = base::TimeTicks::Now();
     TRACE_EVENT0("shell", "BeginPaint");
-    auto canvas = BeginPaint();
+    auto* canvas = BeginPaint();
     TRACE_EVENT0("shell", "draw");
     canvas->clear(background_);
     canvas->drawPath(skPath_, pathPaint_);

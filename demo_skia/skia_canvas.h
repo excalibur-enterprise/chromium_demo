@@ -19,7 +19,7 @@ namespace demo_jni {
 class SkiaCanvas {
  public:
   void OnTouch(int action, float x, float y);
-  virtual ~SkiaCanvas() {} 
+  ~SkiaCanvas() {} 
   virtual void Resize(int width, int height) {}
 
  protected:

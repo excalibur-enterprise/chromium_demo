@@ -268,7 +268,7 @@ void MojoProducer() {
     // 在2019年3月之后的代码中这两个类被改为了 Remote,PendingRemote
     using TestPtr = mojo::InterfacePtr<demo::mojom::Test>;
     using TestPtrInfo = mojo::InterfacePtrInfo<demo::mojom::Test>;
-    auto test_ptr = new TestPtr(TestPtrInfo(std::move(pipe), 0));
+    auto* test_ptr = new TestPtr(TestPtrInfo(std::move(pipe), 0));
     auto& test = *test_ptr;
     test->Hello("World!");
     LOG(INFO) << "Test1 call: Hello";
@@ -318,7 +318,7 @@ void MojoProducer() {
   {
     // 使用 pipe32 来调用Test32接口
     // 为了避免pipe32被销毁后Api2Impl无法响应对方的调用,这里使用new
-    auto test32_ptr =
+    auto* test32_ptr =
         new Remote<Test32>(PendingRemote<Test32>(std::move(pipe32), 0));
     auto& test32 = *test32_ptr;
 
@@ -389,9 +389,9 @@ void MojoConsumer() {
     // 在新的版本中，这两个类被改为了 Receiver,PendingReceiver
     using TestBinding = mojo::Binding<demo::mojom::Test>;
     using TestRequest = mojo::InterfaceRequest<demo::mojom::Test>;
-    auto test = new TestImpl;
+    auto* test = new TestImpl;
     // 为了测试，故意泄漏，避免pipe被close
-    auto binding = new TestBinding(test, TestRequest(std::move(pipe)));
+    auto* binding = new TestBinding(test, TestRequest(std::move(pipe)));
     ALLOW_UNUSED_LOCAL(binding);
   }
   {
@@ -401,7 +401,7 @@ void MojoConsumer() {
   { new Test3Impl(PendingReceiver<Test3>(std::move(pipe31))); }
   { new Test32Impl(PendingReceiver<Test32>(std::move(pipe32))); }
   {
-    auto test4 = new InterfaceBrokerImpl(
+    auto* test4 = new InterfaceBrokerImpl(
         PendingReceiver<InterfaceBroker>(std::move(pipe4)));
     test4->AddMap<Interface1, Interface1Impl>("Interface1");
     test4->AddMap<Interface2, Interface2Impl>("Interface2");

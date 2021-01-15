@@ -65,7 +65,7 @@ class TestInterfaceImpl : public demo::mojom::TestInterface {
   TestInterfaceImpl(PendingReceiver<TestInterface> receiver)
       : receiver_(this, std::move(receiver)) {}
 
-  void Hello(const std::string& who) {
+  void Hello(const std::string& who) override {
     LOG(INFO) << "TestInterfaceImpl run: Hello " << who;
   }
 

@@ -154,7 +154,7 @@ class DemoWindowHost : public ui::PlatformWindowDelegate {
   }
 #if defined(USE_X11)
   VisualID GetTransparentVisualId() {
-    auto display = gfx::GetXDisplay();
+    auto* display = gfx::GetXDisplay();
 
     XVisualInfo visualinfo;
     if(XMatchVisualInfo(display, DefaultScreen(display), 32, TrueColor, &visualinfo)) {
@@ -217,7 +217,7 @@ class DemoWindowHost : public ui::PlatformWindowDelegate {
         action = 2;
       else
         return;
-      auto located_event = event->AsLocatedEvent();
+      auto* located_event = event->AsLocatedEvent();
       auto location = located_event->location();
       if (action != 2)
         DLOG(INFO) << "action,x,y= " << action << "," << location.x() << ","

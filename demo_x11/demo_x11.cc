@@ -83,14 +83,14 @@ int main(int argc, char** argv) {
 
   base::RunLoop run_loop;
   
-  auto xdisplay = gfx::GetXDisplay();
+  auto* xdisplay = gfx::GetXDisplay();
 
   // query Visual for "TrueColor" and 32 bits depth (RGBA)
   XVisualInfo visualinfo;
   if(XMatchVisualInfo(xdisplay, DefaultScreen(xdisplay), 32, TrueColor, &visualinfo)) {
-    printf("TransparentVisualID: %d\n", visualinfo.visualid);
+    printf("TransparentVisualID: %lu\n", visualinfo.visualid);
   } else if(XMatchVisualInfo(xdisplay, DefaultScreen(xdisplay), 24, TrueColor, &visualinfo)) {
-    printf("OpaqueVisualID: %d\n", visualinfo.visualid);
+    printf("OpaqueVisualID: %lu\n", visualinfo.visualid);
   } else {
     auto* visual = DefaultVisual(xdisplay,DefaultScreen(xdisplay));
     auto visualid = XVisualIDFromVisual(visual);
@@ -108,7 +108,7 @@ int main(int argc, char** argv) {
         break;
       }
     }
-    printf("Use default VisualID: %d\n", visualinfo.visualid);
+    printf("Use default VisualID: %lu\n", visualinfo.visualid);
   }
 
   Colormap colormap = XCreateColormap(xdisplay, DefaultRootWindow(xdisplay),

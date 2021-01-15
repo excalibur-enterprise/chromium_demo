@@ -199,7 +199,7 @@ int main(int argc, char* argv[]) {
   }
 
   //----------------------------
-  auto egl_display = eglGetDisplay((EGLNativeDisplayType)display);
+  auto* egl_display = eglGetDisplay((EGLNativeDisplayType)display);
   if (egl_display == EGL_NO_DISPLAY) {
     cerr << "Got no EGL display." << endl;
     return 1;
@@ -210,9 +210,9 @@ int main(int argc, char* argv[]) {
     return 1;
   }
 
-  EGLint egl_attr[] = {
+  //EGLint egl_attr[] = {
       // some attributes to set up our egl-interface
-      EGL_BUFFER_SIZE, 32, EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT, EGL_NONE};
+    //  EGL_BUFFER_SIZE, 32, EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT, EGL_NONE};
 
   // TODO： eglChooseConfig 的结果有时会导致 eglCreateWindowSurface 失败，查明原因
   //  EGLConfig  ecfg;
@@ -258,7 +258,7 @@ int main(int argc, char* argv[]) {
 
   //// egl-contexts collect all state descriptions needed required for operation
   EGLint ctxattr[] = {EGL_CONTEXT_CLIENT_VERSION, 2, EGL_NONE};
-  auto egl_context =
+  auto* egl_context =
       eglCreateContext(egl_display, config, EGL_NO_CONTEXT, ctxattr);
   if (egl_context == EGL_NO_CONTEXT) {
     cerr << "Unable to create EGL context (eglError: " << eglGetError() << ")"
@@ -292,12 +292,12 @@ int main(int argc, char* argv[]) {
         case ClientMessage:
           // check if the client message was send by window manager to indicate
           // user wants to close the window
-          if (event.xclient.message_type ==
-                  XInternAtom(display, "WM_PROTOCOLS", 1) &&
-              event.xclient.data.l[0] ==
-                  XInternAtom(display, "WM_DELETE_WINDOW", 1)) {
-            isUserWantsWindowToClose = 1;
-          }
+          //if (event.xclient.message_type ==
+            //      XInternAtom(display, "WM_PROTOCOLS", 1) &&
+            //  event.xclient.data.l[0] ==
+            //      XInternAtom(display, "WM_DELETE_WINDOW", 1)) {
+            //isUserWantsWindowToClose = 1;
+          //}
         case KeyPress:
           if (XLookupKeysym(&event.xkey, 0) == XK_Escape) {
             isUserWantsWindowToClose = 1;
